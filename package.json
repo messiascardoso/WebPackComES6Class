@@ -1,0 +1,15 @@
+{
+  "name": "itau-devboost-es6-desafio-class",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "messiascardoso@gmail.com",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {
+    "webpack": "^4.44.1"
+  }
+}
