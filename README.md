@@ -1,0 +1,1 @@
+# WebPackComES6Class
