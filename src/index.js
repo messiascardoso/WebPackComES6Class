@@ -3,34 +3,40 @@ import ContaCorrente from "./ContaCorrente/ContaCorrente.js";
 import aberturaDeContas from "./aberturaDeContas.js";
 import Movimentacao from "./Movimentacoes/movimentacoes.js";
 
-const contasCorrentes = [];
+const contasCorrentesCriadas = [];
 
 aberturaDeContas.forEach((conta) => {
-  let cliente = new Cliente({
+	let novaContaCorrente =addContaCorrente(conta);
+	conta.contaCorrente.movimentacao.forEach((value) => {
+    addMovimentacao( novaContaCorrente, value)
+	});
+	contasCorrentesCriadas.push(novaContaCorrente )
+});
+
+function addContaCorrente(conta) {
+	let novoCliente = new Cliente({
     id: conta.clienteID,
     nome: conta.clienteNome,
     email: conta.clienteEmail,
     cpf: conta.clienteCPF,
   });
 
-  let contaCorrente = new ContaCorrente({
+  let novaContaCorrente = new ContaCorrente({
     id: conta.contaCorrente.id,
-    saldo: conta.contaCorrente.saldo,
     contaPoupanca: conta.contaPoupanca,
-    cliente: cliente,
-    movimentacao: conta.contaCorrente.movimentacao,
-  });
+    cliente: novoCliente,
+	});
+	return novaContaCorrente;
+}
 
-  conta.contaCorrente.movimentacao.forEach((value) => {
-    const _movimentacao = new Movimentacao({
-      operacao: value.operacao,
-      custo: value.custo,
-      action: value.action,
-    });
-    // contaCorrente.movimentacao(_movimentacao);
-  });
-   contasCorrentes.push(contaCorrente);
-});
+function addMovimentacao( novaContaCorrente, movimento) {
+	const _movimentacao = new Movimentacao({
+		operacao: movimento.operacao,
+		custo: movimento.custo,
+		action: movimento.action,
+	});
+	novaContaCorrente.addMovimentacao(_movimentacao);
+}
 
 function exibirContas(contas) {
   contas.forEach((conta, index) => {
@@ -40,10 +46,10 @@ function exibirContas(contas) {
     console.log("E-mail:", conta.cliente.email);
     console.log("Cpf:", conta.cliente.cpf);
     console.log("Saldo Poupança: ", conta.saldo);
-    console.log("Saldo Conta corrente: ", conta.saldo);
+    console.log("Saldo Conta corrente: ", conta.saldoContaCorrente);
 
     console.log("__________Movimentacoes____________");
-    conta.movimentacao.forEach((movimentacao) => {
+    conta._movimentacoes.forEach((movimentacao) => {
       console.log("Opercao: ", movimentacao.operacao);
       console.log("Custo: ", movimentacao.custo);
       console.log("Action: ", movimentacao.action);
@@ -51,4 +57,4 @@ function exibirContas(contas) {
   });
 }
 
-exibirContas(contasCorrentes);
+exibirContas(contasCorrentesCriadas);
